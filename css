@@ -1,0 +1,21 @@
+os.makedirs("law-site/articles", exist_ok=True)
+os.makedirs("law-site/css", exist_ok=True)
+os.makedirs("law-site/assets/docs/judgments", exist_ok=True)
+css_content = """body {
+  font-family: 'Noto Naskh Arabic', Tahoma, Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  color: #0b2447;
+  direction: rtl;
+}
+.header { background: #0b4fbf; color: #fff; padding: 16px; text-align: center; border-radius: 0 0 8px 8px; }
+.navbar { background: #0b2447; padding: 10px; text-align: center; }
+.navbar a { color: #fff; margin: 0 10px; text-decoration: none; font-weight: bold; }
+.navbar a:hover { color: #ccc; }
+.container { max-width: 900px; margin: 20px auto; padding: 20px; }
+.card { background: #fff; padding: 18px; border-radius: 12px; margin-
+       bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+#search { width: 100%; padding: 10px; margin: 20px 0; border: 1px solid #ccc; border-radius: 8px; }
+.footer { font-size: 0.9rem; color: #6b7280; text-align: center; padding: 12px; margin-top: 12px; }
+open("law-site/css/style.css", "w", encoding="utf-8").write(css_content)
