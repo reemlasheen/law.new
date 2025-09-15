@@ -1,0 +1,118 @@
+index_html = """<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الخليفة - مرجع القوانين</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar"><a href="index.html">🏠 الرئيسية</a>
+    <a href="#criminal">⚖️ قسم المواد الجنائية</a>
+    <a href="#civil">📑 قسم مواد قانون الخدمة المدنية</a>
+  </nav>
+
+  <header class="header">
+    <h1>الخليفة - مرجع القوانين</h1>
+  </header>
+
+  <main class="container"><input type="text" id="search" placeholder="ابحث عن مادة..." onkeyup="searchFunction()">
+
+    <section id="criminal" class="card">
+      <h2>⚖️ قسم المواد الجنائية</h2>
+      <ul>
+        {criminal_links}
+      </ul>
+    </section>
+
+    <section id="civil" class="card">
+      <h2>📑 قسم مواد قانون الخدمة المدنية</h2>
+      <ul>
+        {civil_links}
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © 2025 - موقع الخليفة للقوانين
+  </footer>
+
+  <script>
+    function searchFunction() {{
+      let input = document.getElementById("search").value.toLowerCase();
+      let lists = document.querySelectorAll("ul");
+      lists.forEach(list => {{
+        let items = list.getElementsByTagName("li");
+        for (let i = 0; i < items.length; i++) {{
+          let a = items[i].getElementsByTagName("a")[0];
+          if (a.innerHTML.toLowerCase().indexOf(input) > -1) {{
+            items[i].style.display = "";
+          }} else {{
+            items[i].style.display = "none";
+          }}
+        }}
+      }});
+    }}
+  </script>
+</body>
+</html>
+"""
+
+# قالب صفحة مادة
+page_template = """<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>{title}</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="../index.html">🏠 الرئيسية</a>
+    <a href="../index.html#criminal">⚖️ قسم المواد الجنائية</a>
+    <a href="../index.html#civil">📑 قسم مواد قانون الخدمة المدنية</a>
+  </nav>
+
+  <main class="container">
+    <div class="card">
+      <h1>{title}</h1>
+      <h3>النص</h3>
+      <p>هنا نص {title}.</p>
+
+      <h3>الشرح</h3>
+      <p>شرح موسع لـ {title} مع الأمثلة.</p>
+
+      <h3>الأحكام المتعلقة</h3>
+      <p>📄 <a href="../assets/docs/judgments/{file}.pdf">تحميل الحكم الكامل (PDF)</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    © 2025 - موقع الخليفة للقوانين
+  </footer>
+</body># إنشاء صفحات المواد
+criminal_links, civil_links = "", ""
+
+for i in range(1, 21):
+    title = f"المادة الجنائية {i}"
+    file = f"criminal_{i:02d}"
+    open(f"law-site/articles/{file}.html", "w", encoding="utf-8").write(
+        page_template.format(title=title, file=file)
+    )
+    open(f"law-site/assets/docs/judgments/{file}.pdf", "wb").write(b"")  # PDF فارغ
+    criminal_links += f'<li><a href="articles/{file}.html">{title}</a></li>\n'
+
+for i in range(1, 21):
+    title = f"المادة المدنية {i}"
+    file = f"civil_{i:02d}"
+    open(f"law-site/articles/{file}.html", "w", encoding="utf-8").write(
+        page_template.format(title=title, file=file)
+    )
+    open(f"law-site/assets/docs/judgments/{file}.pdf", "wb").write(b"")
+    civil_links += f'<li><a href="articles/{file}.html">{title}</a></li>\n'
+
+# كتابة index.html
+open("law-site/index.html", "w", encoding="utf-8").write(
+    index_html.format(criminal_links=criminal_links, civil_links=civil_links)
+)
+</html>
